@@ -1,18 +1,14 @@
 #!/bin/bash
-set -e
+set -x
 
-# Constants
 installer_filename='installer.jar'
 server_dir='/fabric'
-
-# Variables
-mc_version="${MINECRAFT_VERSION:-1.19.3}"
-loader_version="${FABRIC_LOADER_VERSION:-0.14.11}"
-installer_version="${FABRIC_INSTALLER_VERSION:-0.11.1}"
+mc_version='1.19.2'
+installer_version='0.11.1'
 
 # Download dependencies
 sudo apt update && sudo apt upgrade
-sudo apt install openjdk-17-jre-headless wget
+sudo apt install -y openjdk-17-jre-headless wget
 
 # Download the server installer
 mkdir -p "${server_dir}"
@@ -25,7 +21,7 @@ java -jar "${server_dir}/${installer_filename}" server \
 rm "${server_dir}/${installer_filename}"
 
 # Auto agree to EULA
-eula=true > 'eula.txt'
+echo 'eula=true' > 'eula.txt'
 
 # Run the server
 java -jar "${server_dir}/fabric-server-launch.jar"

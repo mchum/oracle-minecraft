@@ -1,5 +1,5 @@
 terraform {
-    required_version = ">= 1.1.7"
+    required_version = ">= 1.3.6"
     required_providers {
         oci = {
             source = "oracle/oci"
@@ -91,13 +91,18 @@ resource "oci_core_subnet" "public" {
     route_table_id              = oci_core_route_table.default.id
 }
 
+data "oci_identity_availability_domain" "availability_domain" {
+    compartment_id = var.tenancy_ocid
+    ad_number = "1"
+}
+
 # Compute
 # Free Tier: 
 # * 4 ARM-based A1 cores and 24 GB memory
 # * 200 GB block storage, minimum 50 GB used here
-resource "oci_core_instance" "minecraft" {
+resource "oci_core_instance" "instance" {
     # Required
-    availability_domain = var.availability_domain
+    availability_domain = data.oci_identity_availability_domain.availability_domain.name
     compartment_id = var.compartment_ocid
     shape = "VM.Standard.A1.Flex"
     source_details {
@@ -107,7 +112,7 @@ resource "oci_core_instance" "minecraft" {
     }
 
     # Optional
-    display_name = "minecraft"
+    display_name = "instance"
     shape_config {
         ocpus = 4
         memory_in_gbs = 24
@@ -125,5 +130,5 @@ resource "oci_core_instance" "minecraft" {
 
 output "worker_node_ip" {
     description = "IP of worker node"
-    value = oci_core_instance.minecraft.public_ip
+    value = oci_core_instance.instance.public_ip
 }

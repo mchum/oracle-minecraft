@@ -19,11 +19,6 @@ variable "region" {
   default = "ca-toronto-1"
 }
 
-variable "availability_domain" {
-  type = string
-  default = "NAhl:CA-TORONTO-1-AD-1"
-}
-
 variable "compartment_ocid" {
   type = string
   description = "comparment to deploy to"
