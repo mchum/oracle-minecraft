@@ -124,7 +124,6 @@ resource "oci_core_instance" "instance" {
     preserve_boot_volume = false
     metadata = {
         ssh_authorized_keys = file(var.ssh_public_keypath)
-        user_data = filebase64(var.bootstrap_script_filepath)
     }
 }
 
