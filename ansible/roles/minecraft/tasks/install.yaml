@@ -28,13 +28,19 @@
     cmd: java -jar {{ install_dir }}/installer.jar server -mcversion {{ minecraft_version }} -downloadMinecraft
     chdir: "{{ install_dir }}"
 
+- name: Remove the installer
+  file:
+    path: "{{ install_dir }}/installer.jar"
+    state: absent
+
 - name: Accept the EULA
   copy:
     dest: "{{ install_dir }}/eula.txt"
     content: |
       eula=true
 
-- name: Remove the installer
-  file:
-    path: "{{ install_dir }}/installer.jar"
-    state: absent
+- name: Copy config files to install directory
+  copy:
+    src: "{{ item }}"
+    dest: "{{ install_dir }}"
+  with_fileglob: "files/*"
