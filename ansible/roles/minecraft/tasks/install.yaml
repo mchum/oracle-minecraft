@@ -1,0 +1,42 @@
+---
+- name: Update and upgrade apt packages
+  become: true
+  apt:
+    upgrade: yes
+    update_cache: yes
+
+- name: Install prerequisites
+  become: true
+  apt:
+    pkg:
+      - openjdk-17-jre-headless
+
+- name: Ensure install directory exists
+  file:
+    path: "{{ install_dir }}"
+    state: directory
+
+- name: Download the installer
+  get_url:
+    url: "https://maven.fabricmc.net/net/fabricmc/fabric-installer/{{installer_version}}/fabric-installer-{{installer_version}}.jar"
+    dest: "{{ install_dir }}/installer.jar"
+    mode: 0740
+  any_errors_fatal: true
+
+- name: Run the installer to install Minecraft server
+  shell:
+    cmd: >
+      java -jar {{ install_dir }}/installer.jar server
+           -mcversion {{ minecraft_version }} -downloadMinecraft
+    chdir: "{{ install_dir }}"
+
+- name: Accept the EULA
+  copy:
+    dest: "{{ install_dir }}/eula.txt"
+    content: |
+      eula=true
+
+- name: Remove the installer
+  file:
+    path: "{{ install_dir }}/installer.jar"
+    state: absent
