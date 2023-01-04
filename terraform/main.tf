@@ -80,7 +80,7 @@ resource "oci_core_security_list" "public" {
         protocol    = "6"
         source      = "0.0.0.0/0"
         source_type = "CIDR_BLOCK"
-        description = "tcp traffic for Minecraft"
+        description = "TCP traffic for Minecraft"
         tcp_options {
             // These values correspond to the destination port range
             min = 25565
