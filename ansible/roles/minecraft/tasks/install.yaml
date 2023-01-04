@@ -25,9 +25,7 @@
 
 - name: Run the installer to install Minecraft server
   shell:
-    cmd: >
-      java -jar {{ install_dir }}/installer.jar server
-           -mcversion {{ minecraft_version }} -downloadMinecraft
+    cmd: java -jar {{ install_dir }}/installer.jar server -mcversion {{ minecraft_version }} -downloadMinecraft
     chdir: "{{ install_dir }}"
 
 - name: Accept the EULA
