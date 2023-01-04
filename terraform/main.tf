@@ -45,15 +45,25 @@ resource "oci_core_route_table" "default" {
     }
 }
 
-resource "oci_core_security_list" "default" {
+resource "oci_core_security_list" "public" {
     # Required
     compartment_id = var.compartment_ocid
     vcn_id = module.vcn.vcn_id
-    display_name = "Default Security List"
+    display_name = "Security List for public Subnet"
     egress_security_rules {
         protocol            = "all"
         destination         = "0.0.0.0/0"
         destination_type    = "CIDR_BLOCK"
+    }
+    ingress_security_rules {
+        protocol    = "1"
+        source      = "0.0.0.0/0"
+        source_type = "CIDR_BLOCK"
+        description = "ICMP traffic"
+        icmp_options {
+            type = 3
+            code = 4
+        }
     }
     ingress_security_rules {
         protocol    = "6"
@@ -61,22 +71,31 @@ resource "oci_core_security_list" "default" {
         source_type = "CIDR_BLOCK"
         description = "TCP traffic to port 22"
         tcp_options {
-            source_port_range {
-                min = 22
-                max = 22
-            }
+            // These values correspond to the destination port range
+            min = 22
+            max = 22
         }
     }
     ingress_security_rules {
         protocol    = "6"
         source      = "0.0.0.0/0"
         source_type = "CIDR_BLOCK"
-        description = "Minecraft Port"
+        description = "tcp traffic for Minecraft"
         tcp_options {
-            source_port_range {
-                min = 25565
-                max = 25565
-            }
+            // These values correspond to the destination port range
+            min = 25565
+            max = 25565
+        }
+    }
+    ingress_security_rules {
+        protocol    = "17"
+        source      = "0.0.0.0/0"
+        source_type = "CIDR_BLOCK"
+        description = "UDP traffic for Minecraft"
+        udp_options {
+            // These values correspond to the destination port range
+            min = 25565
+            max = 25565
         }
     }
 }
@@ -89,6 +108,7 @@ resource "oci_core_subnet" "public" {
     prohibit_internet_ingress   = false
     prohibit_public_ip_on_vnic  = false
     route_table_id              = oci_core_route_table.default.id
+    security_list_ids           = [oci_core_security_list.public.id]
 }
 
 data "oci_identity_availability_domain" "availability_domain" {
