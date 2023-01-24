@@ -1,5 +1,7 @@
 terraform {
-    backend "s3" {}
+    # S3 backend is broken due to generated secret keys containing special characters
+    # https://qiita.com/rakys/items/d918899e34802cd681d3
+    # backend "s3" {}
     required_version = ">= 1.3.6"
     required_providers {
         oci = {
