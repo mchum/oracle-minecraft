@@ -71,3 +71,10 @@
   command:
     cmd: mkfifo /run/minecraft-server.stdin
     creates: /run/minecraft-server.stdin
+
+- name: Copy minecraft admin function
+  copy:
+    src: "files/mc-admin"
+    dest: /usr/local/bin
+    owner: root
+    mode: 711

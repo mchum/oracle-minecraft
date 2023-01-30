@@ -1,0 +1,3 @@
+#!/usr/bin/bash
+
+echo "$@" > /run/minecraft-server.stdin
