@@ -43,7 +43,7 @@
   copy:
     src: "{{ item }}"
     dest: "{{ install_dir }}"
-  with_fileglob: "files/*"
+  with_fileglob: "files/configs/*"
 
 - name: Allow server port INPUT
   iptables:
@@ -52,3 +52,22 @@
     protocol: tcp
     destination_ports:
       - "25565"
+
+- name: Template the service file to systemd directory
+  template:
+    src: templates/minecraft-server.service.j2
+    dest: /etc/systemd/system/minecraft-server.service
+    owner: root
+    mode: 0644
+
+- name: Copy socket file to systemd directory
+  copy:
+    src: files/minecraft-server.socket
+    dest: /etc/systemd/system/
+    owner: root
+    mode: 0644
+
+- name: Created named pipe
+  command:
+    cmd: mkfifo /run/minecraft-server.stdin
+    creates: /run/minecraft-server.stdin

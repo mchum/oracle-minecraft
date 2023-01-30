@@ -1,0 +1,12 @@
+[Unit]
+Description=Minecraft (Fabric) Server
+Requires=minecraft-server.socket
+After=minecraft-server.socket
+
+[Service]
+WorkingDirectory={{ install_dir }}
+ExecStart=/usr/bin/java -jar {{ install_dir }}/fabric-server-launch.jar
+Sockets=minecraft-server.socket
+StandardInput=socket
+StandardOutput=journal
+StandardError=journal

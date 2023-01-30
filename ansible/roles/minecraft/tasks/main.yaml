@@ -1,2 +1,2 @@
 ---
-- include: install.yaml
+- include_tasks: install.yaml
