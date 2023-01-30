@@ -1,2 +1,14 @@
 ---
+- debug: var=operation
 - include_tasks: install.yaml
+  when: "'{{ operation }}' == 'install'"
+
+# Backup only if backups exist
+- name: Ensure world is available to download
+  stat:
+    path: "{{ install_dir }}/world/"
+  register: world_dir
+  when: "'{{ operation }}' == 'backup'"
+
+- include_tasks: backup.yaml
+  when: world_dir.stat.isdir is defined and world_dir.stat.isdir

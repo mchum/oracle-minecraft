@@ -1,0 +1,10 @@
+---
+- name: Compress the world directory
+  archive:
+    path: "{{ install_dir }}/world"
+    dest: "/tmp/backup.tgz"
+
+- name: Download the world directory
+  fetch:
+    src: "/tmp/backup.tgz"
+    dest: "{{ backup_dir }}/world-{{ ansible_date_time.epoch }}.tgz"

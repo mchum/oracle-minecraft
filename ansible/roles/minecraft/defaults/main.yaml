@@ -1,4 +1,5 @@
 ---
 install_dir: /minecraft
+backup_dir: /tmp
 minecraft_version: 1.19.3
 installer_version: 0.11.1
