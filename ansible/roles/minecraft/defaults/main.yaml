@@ -1,4 +1,4 @@
 ---
-install_dir: /fabric
+install_dir: /minecraft
 minecraft_version: 1.19.3
 installer_version: 0.11.1

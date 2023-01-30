@@ -1,0 +1,11 @@
+[Unit]
+Description=Minecraft (Fabric) Server
+StartLimitIntervalSec=0[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=root
+ExecStart=/usr/bin/java -jar {{ install_dir }}/fabric-server-launch.jar
+
+[Service]
+WorkingDirectory={{ install_dir }}

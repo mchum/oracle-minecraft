@@ -2,5 +2,6 @@
 - hosts: minecraft
   gather_facts: yes
   become: yes
+  remote_user: ubuntu
   roles:
     - role: minecraft

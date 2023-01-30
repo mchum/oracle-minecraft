@@ -44,3 +44,11 @@
     src: "{{ item }}"
     dest: "{{ install_dir }}"
   with_fileglob: "files/*"
+
+- name: Allow server port INPUT
+  iptables:
+    chain: INPUT
+    jump: ACCEPT
+    protocol: tcp
+    destination_ports:
+      - "25565"
