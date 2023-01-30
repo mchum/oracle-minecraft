@@ -1,5 +1,5 @@
 ---
-- name: Compress the world directory
+- name: Compress the world directory in install directory
   archive:
     path: "{{ install_dir }}/world"
     dest: "/tmp/backup.tgz"
@@ -7,4 +7,20 @@
 - name: Download the world directory
   fetch:
     src: "/tmp/backup.tgz"
-    dest: "{{ backup_dir }}/world-{{ ansible_date_time.epoch }}.tgz"
+    dest: "{{ backup_dir }}/world-{{ ansible_date_time.iso8601 | replace(':', '-') }}.tgz"
+    flat: yes
+
+- name: Find all config files in install directory
+  find:
+    paths: "{{ install_dir }}"
+    patterns: '*.json'
+    recurse: no
+  register: configs
+
+- name: Download the configs
+  fetch:
+    src: "{{ item.path }}"
+    dest: "{{ role_path }}/files/configs/{{ item.path | basename }}"
+    flat: yes
+  with_items: "{{ configs.files }}"
+  when: "'{{ item.path | basename }}' != 'usercache.json'"
