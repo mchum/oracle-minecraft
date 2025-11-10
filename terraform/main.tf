@@ -8,11 +8,7 @@ terraform {
 }
 
 provider "oci" {
-    tenancy_ocid        = var.tenancy_ocid
-    user_ocid           = var.user_ocid
-    private_key_path    = var.private_key_path
-    fingerprint         = var.fingerprint
-    region              = var.region
+    config_file_profile = "MINECRAFT"
 }
 
 locals {
@@ -77,7 +73,6 @@ resource "oci_core_security_list" "this" {
         source_type = "CIDR_BLOCK"
         description = "TCP traffic to port 22"
         tcp_options {
-            // These values correspond to the destination port range
             min = 22
             max = 22
         }
@@ -88,7 +83,6 @@ resource "oci_core_security_list" "this" {
         source_type = "CIDR_BLOCK"
         description = "TCP traffic for Minecraft"
         tcp_options {
-            // These values correspond to the destination port range
             min = 25565
             max = 25565
         }
@@ -99,7 +93,6 @@ resource "oci_core_security_list" "this" {
         source_type = "CIDR_BLOCK"
         description = "UDP traffic for Minecraft"
         udp_options {
-            // These values correspond to the destination port range
             min = 25565
             max = 25565
         }
@@ -128,7 +121,7 @@ data "oci_core_images" "ubuntu" {
 
     # Operating System Details
     operating_system = local.operating_system
-    operating_system_version = 22.04
+    operating_system_version = 24.04
     shape = local.shape
     sort_by = "TIMECREATED"
     sort_order = "DESC"
@@ -150,7 +143,7 @@ resource "oci_core_instance" "node" {
     }
 
     # Optional
-    display_name = "node"
+    display_name = "minecraft"
     shape_config {
         ocpus = 4
         memory_in_gbs = 24
