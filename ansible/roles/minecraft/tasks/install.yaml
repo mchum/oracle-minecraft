@@ -9,7 +9,8 @@
   become: true
   apt:
     pkg:
-      - openjdk-17-jre-headless
+      - screen
+      - openjdk-21-jre-headless
 
 - name: Ensure install directory exists
   file:
