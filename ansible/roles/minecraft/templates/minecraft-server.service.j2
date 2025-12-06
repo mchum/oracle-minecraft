@@ -6,8 +6,8 @@ After=network.target
 ExecReload=/usr/bin/screen -S minecraft -X stuff \"reload^M\"
 
 ExecStart=/usr/bin/screen -DmS minecraft /usr/bin/java \
-    -Xms2G \
-    -Xmx2G \
+    -Xms18G \
+    -Xmx4G \
     -XX:+UseG1GC \
     -XX:+ParallelRefProcEnabled \
     -XX:MaxGCPauseMillis=200 \
@@ -26,6 +26,7 @@ ExecStart=/usr/bin/screen -DmS minecraft /usr/bin/java \
     -XX:SurvivorRatio=32 \
     -XX:+PerfDisableSharedMem \
     -XX:MaxTenuringThreshold=1 \
+    -Djava.net.preferIPv4Stack=true \
     -jar {{ install_dir }}/fabric-server-launch.jar --nogui
 
 WorkingDirectory={{ install_dir }}

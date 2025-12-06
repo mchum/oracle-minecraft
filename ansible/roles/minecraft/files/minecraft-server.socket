@@ -1,3 +1,0 @@
-[Socket]
-ListenFIFO=%t/minecraft-server.stdin
-Service=minecraft-server.service

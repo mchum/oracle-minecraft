@@ -61,21 +61,8 @@
     owner: root
     mode: 0644
 
-- name: Copy socket file to systemd directory
-  copy:
-    src: files/minecraft-server.socket
-    dest: /etc/systemd/system/
-    owner: root
-    mode: 0644
-
-- name: Created named pipe
-  command:
-    cmd: mkfifo /run/minecraft-server.stdin
-    creates: /run/minecraft-server.stdin
-
-- name: Copy minecraft admin function
-  copy:
-    src: "files/mc-admin"
-    dest: /usr/local/bin
-    owner: root
-    mode: 711
+- name: Start and enable the Minecraft server
+  systemd_service:
+    name: minecraft-server.service
+    enabled: true
+    state: started
